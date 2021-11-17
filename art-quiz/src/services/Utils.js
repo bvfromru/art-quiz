@@ -37,21 +37,25 @@ const Utils = {
       arr.push(str);
       const databaseNumber = images.length;
       while (arr.length < 4) {
-        if (!arr.includes(images[getRandomInt(databaseNumber)].author) && arr.includes(images[getRandomInt(databaseNumber)].author) !== str) {
-          arr.push(images[getRandomInt(databaseNumber)].author)
+        let randomInt = getRandomInt(databaseNumber);
+        if (!arr.includes(images[randomInt].author) && arr.includes(images[randomInt].author) !== str) {
+          arr.push(images[randomInt].author)
         }
       }
       arr = shuffle(arr);
       return arr;
-    }
+    },
 
+    calculateAnswers(arr) {
+      return arr.filter((value) => {return value}).length;
+     },
 
     // --------------------------------
     //  Simple sleep implementation
     // --------------------------------
-    , sleep: (ms) => {
+    sleep: (ms) => {
         return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    },
 }
 
 export default Utils;

@@ -3,20 +3,39 @@ import { chunkedQuestionsbyAuthor } from '../../app.js'
 
 let RoundByAuthor = {
     render : async () => {
+      let request = Utils.parseRequestURL();
         return /*html*/`
             <section class="section">
+            <div id ="div" >Правильный ответ: </div>
+              <a href=#/byauthor>Викторина по автору</a>
               <h1>Кто является автором этой картины?</h1>
-              <img id = 'img'></img>
-
-              <div id ="roundnumber" >Раунд: </div>
-              <div id ="div" >Правильный ответ: </div>
-              <ul id = "answers-container">
-                <li id = "answer1"></li>
-                <li id = "answer2"></li>
-                <li id = "answer3"></li>
-                <li id = "answer4"></li>
+              <div class = "image-container">
+                <img id = 'img'></img>
+                <div class = "show-result">
+                  <h2 class = "show-result-state"></h2>
+                  <p class = "show-result-author"></p>
+                  <p class = "show-result-name"></p>
+                  <p class = "show-result-year"></p>
+                  <button class = "btn-next">OK</button>
+                </div>
+              </div>
+              
+              <div class= "progressbar-container">
+                <ul>
+                ${chunkedQuestionsbyAuthor[request.id].map(
+                    (obj, index) =>
+                      `<li class = "progressbar-element progressbar-element-${index + 1}">
+                      </li>`
+                  )
+                  .join("\n ")}
+                </ul>
+              </div>
+              <ul class = "answers-container" id = "answers-container">
+                <li><a href = "/" class = "answer answer-1"></a></li>
+                <li><a href = "/" class = "answer answer-2"></a></li>
+                <li><a href = "/" class = "answer answer-3"></a></li>
+                <li><a href = "/" class = "answer answer-4"></a></li>
               </ul>
-              <a href=#/byauthor>Категории по автору</a>
 
             </section>
         `
@@ -29,27 +48,59 @@ let RoundByAuthor = {
       let currentQuestionData = chunkedQuestionsbyAuthor[request.id][roundNumber];
       const img = document.getElementById('img');
       const div = document.getElementById('div');
-      const roundNumberDiv = document.getElementById('roundnumber');
-      const answer1 = document.getElementById('answer1');
-      const answer2 = document.getElementById('answer2');
-      const answer3 = document.getElementById('answer3');
-      const answer4 = document.getElementById('answer4');
+      const answer1 = document.querySelector('.answer-1');
+      const answer2 = document.querySelector('.answer-2');
+      const answer3 = document.querySelector('.answer-3');
+      const answer4 = document.querySelector('.answer-4');
       const answersContainer = document.getElementById('answers-container');
 
     
-
+      document.querySelector(`.progressbar-element-${roundNumber + 1}`).classList.add('current');
       updateContent();
 
       answersContainer.addEventListener('click', acceptAnswer);
 
+      function showResultCard(state) {
+        const showResultState = document.querySelector('.show-result-state');
+        const showResultAuthor = document.querySelector('.show-result-author');
+        const showResultName = document.querySelector('.show-result-name');
+        const showResultYear = document.querySelector('.show-result-year');
+        const btnNext = document.querySelector('.btn-next');
+        showResultAuthor.innerText = currentQuestionData.author;
+        showResultName.innerText = `"${currentQuestionData.name}"`;
+        showResultYear.innerText = `(${currentQuestionData.year})`;
+        if (state) {
+          showResultState.innerText = "Правильный ответ!"
+        } else {
+          showResultState.innerText = "Неправильный ответ!"
+        }
+        btnNext.addEventListener('click', nextRound);
+      }
+
       function acceptAnswer(e) {
+        e.preventDefault();
         if (e.target.innerText === currentQuestionData.author) {
           answers.push(true);
-          alert('Правильный ответ!');
+          document.querySelector(`.progressbar-element-${roundNumber + 1}`).classList.add('correct');
+          e.target.classList.add('correct');
+          showResultCard(true);
+          //alert('Правильный ответ!');
         } else {
           answers.push(false);
-          alert('Ответ неверный!');
+          document.querySelector(`.progressbar-element-${roundNumber + 1}`).classList.add('wrong');
+          e.target.classList.add('wrong');
+          showResultCard(false);
+          //alert('Ответ неверный!');
         }
+       
+       }
+
+       function nextRound() {
+         const answerBtns = document.querySelectorAll('.answer');
+         answerBtns.forEach(element => {
+           element.classList.remove('correct');
+           element.classList.remove('wrong');
+         });
         if (roundNumber < (chunkedQuestionsbyAuthor[request.id].length - 1)) {
           roundNumber++;
           updateContent();
@@ -58,20 +109,16 @@ let RoundByAuthor = {
         }             
        }
 
-       function calculateAnswers(arr) {
-        return arr.filter((value) => {return value}).length;
-       }
-
        function updateContent() {
         currentQuestionData = chunkedQuestionsbyAuthor[request.id][roundNumber];
         shuffledAuthorsArr = Utils.getRandomAuthors(currentQuestionData.author);
         img.src = `../../data/${currentQuestionData.imageNum}.jpg`
         div.innerText = `Правильный ответ: ${currentQuestionData.author}`;
-        roundNumberDiv.innerText = `Раунд: ${roundNumber + 1}`;
         answer1.innerText = shuffledAuthorsArr[0];
         answer2.innerText = shuffledAuthorsArr[1];
         answer3.innerText = shuffledAuthorsArr[2];
         answer4.innerText = shuffledAuthorsArr[3];
+        document.querySelector(`.progressbar-element-${roundNumber + 1}`).classList.add('current');
       }   
 
       function finishRound() {

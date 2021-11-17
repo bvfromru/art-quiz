@@ -7,20 +7,56 @@ let ResultsByAuthor = {
       return /*html*/`
           <section class="section">
             <h1>Результаты игры по автору</h1>
+            <ul class = "results-container">
             ${ chunkedQuestionsbyAuthor[request.id].map((obj, index) => 
-              `<li>
-                <img src = ../../data/${chunkedQuestionsbyAuthor[request.id][index].imageNum}.jpg>
+              `<li class = "results">
+                <div class = "flip-container">
+                  <div class = "flipper">
+                    <div class = "front">
+                      <img src = ../../data/${chunkedQuestionsbyAuthor[request.id][index].imageNum}.jpg>
+                      <div class = "score"></div>
+                    </div>
+                    <div class = "back">
+                      <div class = "author">${chunkedQuestionsbyAuthor[request.id][index].author}</div>
+                      <div class = "name">"${chunkedQuestionsbyAuthor[request.id][index].name}"</div>
+                      <div class = "year">(${chunkedQuestionsbyAuthor[request.id][index].year})</div>
+                    </div>
+                  </div>
+                </div>
+                
               </li>`
               ).join('\n ')
             }
-
+            </ul>
           </section>
       `
   }
   , after_render: async () => {
     let request = Utils.parseRequestURL();
     let answersArr = JSON.parse(localStorage.getItem('quizAnswersByAuthor'))[request.id];
+    const resultsContainer = document.querySelector('.results-container');
+    resultsContainer.addEventListener('click', toggleFlip);
+    paintCards();
+
     console.log(answersArr);
+
+    function toggleFlip(e) {
+      let target = e.target;
+      let flipContainer = target.closest('.flip-container');
+      flipContainer.classList.toggle('flip');
+    }
+
+    function paintCards() {
+      let quizAnswersByAuthor = JSON.parse(localStorage.getItem('quizAnswersByAuthor'));
+      const allCards = document.querySelectorAll('.results');
+      allCards.forEach((element, id) => {
+        if (!quizAnswersByAuthor[request.id][id]) {
+          element.classList.add('grayscale');
+        }
+      });
+    }
+
+
   }
 }
 
