@@ -6,15 +6,16 @@ let CategoriesByAuthor = {
   render: async () => {
     let view = /*html*/ `
           <section class="section">
-              <h1> Викторина по автору </h1>
+              <h1>Викторина по художникам</h1>
               <ul class = "categories-container">
               ${chunkedQuestionsbyAuthor
                 .map(
                   (obj, index) =>
-                    `<li class = "categories categories-${index + 1}">
-                      <a href = "#/byauthor/${index}">
-                        <div class = "number">${index + 1}</div>
-                      </a>
+                    `<li class = categories-container-li>
+                      <div class = "categories categories-${index + 1}">
+                        <a href = "#/byauthor/${index}"></a>
+                      </div>
+                      <div class = "number">${index + 1}</div>
                       <a href = "#/resultsbyauthor/${index}" class= "results results-${index + 1}"></a>
                       <div class = "categories-results  categories-results-${index + 1}"></div>
                     </li>`
@@ -25,8 +26,12 @@ let CategoriesByAuthor = {
       `;
     return view;
   },
+
   after_render: async () => {
     //let request = Utils.parseRequestURL();
+    const navbarReturn = document.querySelector('.navbar-item-return');
+    //const cardContainer = document.querySelectorAll('.categories');
+    navbarReturn.classList.add('invisible');
     let quizAnswersByAuthor = JSON.parse(
       localStorage.getItem("quizAnswersByAuthor")
     );
@@ -40,8 +45,9 @@ let CategoriesByAuthor = {
       chunkedQuestionsbyAuthor.map((obj, index) => {
         let numberSolved = Utils.calculateAnswers(quizAnswersByAuthor[index]);
         let numberCommon = chunkedQuestionsbyAuthor[0].length;
+        document.querySelector(`.categories-${index + 1}`).style.backgroundImage  = `url("../../data/${chunkedQuestionsbyAuthor[index][0].imageNum}.jpg")`;
         if (!numberSolved) {
-          document.querySelector(`.categories-${index + 1}`).classList.add("grayscale");
+          document.querySelector(`.categories-${index + 1}`).classList.add("half-grayscale");
           document.querySelector(`.results-${index + 1}`).classList.add("hidden");
           document.querySelector(`.categories-results-${index + 1}`).classList.add("hidden");
         }

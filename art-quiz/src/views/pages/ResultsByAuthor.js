@@ -4,9 +4,10 @@ import { chunkedQuestionsbyAuthor } from '../../app.js'
 let ResultsByAuthor = {
   render : async () => {
     let request = Utils.parseRequestURL();
+    let roundNumber = +request.id.replace(/^0+/, '') + 1
       return /*html*/`
           <section class="section">
-            <h1>Результаты игры по автору</h1>
+            <h1>Результаты ${roundNumber} раунда игры по художникам</h1>
             <ul class = "results-container">
             ${ chunkedQuestionsbyAuthor[request.id].map((obj, index) => 
               `<li class = "results">
@@ -42,7 +43,15 @@ let ResultsByAuthor = {
 
     function toggleFlip(e) {
       let target = e.target;
-      let flipContainer = target.closest('.flip-container');
+      const flipContainer = target.closest('.flip-container');
+      const flipContainerAll = document.querySelectorAll('.flip-container');
+      flipContainerAll.forEach(element => {
+
+        if (element != flipContainer) {
+          element.classList.remove('flip');  
+        }
+        
+      });
       flipContainer.classList.toggle('flip');
     }
 

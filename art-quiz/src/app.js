@@ -3,11 +3,11 @@
 //import images from './images.js'
 import Home from "./views/pages/Home.js";
 import Error404 from "./views/pages/Error404.js";
-import PostShow from "./views/pages/PostShow.js";
+import PostShow from "./views/pages/Settings.js";
 import RoundByAuthor from "./views/pages/RoundByAuthor.js";
 import ResultsByAuthor from "./views/pages/ResultsByAuthor.js";
 import Register from "./views/pages/Register.js";
-
+import Settings from "./views/pages/Settings.js";
 import Navbar from "./views/components/Navbar.js";
 import Bottombar from "./views/components/Bottombar.js";
 
@@ -17,12 +17,16 @@ import CategoriesByAuthor from "./views/pages/CategoriesByAuthor.js";
 // List of supported routes. Any url other than these routes will throw a 404 error
 const routes = {
   "/": Home,
-  "/p/:id": PostShow,
+  "/settings": Settings,
   "/byauthor/:id": RoundByAuthor,
   "/resultsbyauthor/:id": ResultsByAuthor,
   "/register": Register,
   "/byauthor": CategoriesByAuthor,
 };
+
+
+
+
 
 // Initialize pictures data
 let getPicturesData = async () => {

@@ -1,12 +1,14 @@
+//import { audioClick } from '../../services/Audio.js'
+
 let Home = {
   render: async () => {
     let view = `
         <main>
             <nav>
             <ul class = "main-btn-container">
-              <li class = "main-btn"><a href=#/byauthor>По художникам</a></li>
-              <li class = "main-btn"><a href=#/bypictures>По картинам</a></li>
-              <li class = "main-btn"><a href=#>Настройки</a></li>
+              <li class = "main-btn btn"><a class = "btn-icon btn-byartist" href = "#/byauthor">Викторина по художникам</a></li>
+              <li class = "main-btn btn"><a class = "btn-icon btn-bypicture" href = "#/bypictures">Викторина по картинам</a></li>
+              <li class = "main-btn btn"><a class = "btn-icon btn-settings" href = "#/settings">Настройки</a></li>
             </ul>
               </nav>    
             </main>
@@ -14,7 +16,15 @@ let Home = {
         `;
     return view;
   },
-  after_render: async () => {},
+  after_render: async () => {
+
+    const navbarHome = document.querySelector('.navbar-item-home');
+    const navbarReturn = document.querySelector('.navbar-item-return');
+    navbarHome.classList.add('invisible');
+    navbarReturn.classList.add('invisible');
+
+
+  },
 };
 
 export default Home;

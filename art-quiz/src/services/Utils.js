@@ -56,6 +56,20 @@ const Utils = {
     sleep: (ms) => {
         return new Promise(resolve => setTimeout(resolve, ms));
     },
+
+    playAudio(src) {
+      const newAudio = new Audio(src);
+      newAudio.currentTime = 0.0;
+      newAudio.play();
+    },
+
+    sounds: {
+      click: '../../assets/sounds/click.mp3',
+      wrong: '../../assets/sounds/wrong.mp3',
+      correct: '../../assets/sounds/correct.mp3',
+      finishRound: '../../assets/sounds/finishround.mp3',
+    },
+
 }
 
 export default Utils;
