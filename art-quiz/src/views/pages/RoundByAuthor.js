@@ -252,7 +252,7 @@ let RoundByAuthor = {
        function updateContent() {
         currentQuestionData = chunkedQuestionsbyAuthor[request.id][questionNumber];
         shuffledAuthorsArr = Utils.getRandomAuthors(currentQuestionData.author);
-        imageContainer.style.backgroundImage  = `url("../../data/${currentQuestionData.imageNum}.jpg")`;
+        imageContainer.style.backgroundImage  = `url("../../data/${currentQuestionData.imageNum}.webp")`;
         div.innerText = `Правильный ответ: ${currentQuestionData.author}`;
         answer1.innerText = shuffledAuthorsArr[0];
         answer2.innerText = shuffledAuthorsArr[1];

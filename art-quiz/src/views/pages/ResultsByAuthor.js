@@ -14,7 +14,7 @@ let ResultsByAuthor = {
                 <div class = "flip-container">
                   <div class = "flipper">
                     <div class = "front">
-                      <img src = ../../data/${chunkedQuestionsbyAuthor[request.id][index].imageNum}.jpg>
+                      <img src = ../../data/${chunkedQuestionsbyAuthor[request.id][index].imageNum}.webp>
                       <div class = "score"></div>
                     </div>
                     <div class = "back">
