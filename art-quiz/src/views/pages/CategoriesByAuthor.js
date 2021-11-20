@@ -29,8 +29,8 @@ let CategoriesByAuthor = {
 
   after_render: async () => {
     //let request = Utils.parseRequestURL();
-    const navbarReturn = document.querySelector('.navbar-item-return');
     //const cardContainer = document.querySelectorAll('.categories');
+    const navbarReturn = document.querySelector('.navbar-item-return');
     navbarReturn.classList.add('invisible');
     let quizAnswersByAuthor = JSON.parse(
       localStorage.getItem("quizAnswersByAuthor")

@@ -7,42 +7,46 @@ let RoundByAuthor = {
         return /*html*/`
             <div class = "spoiler" id ="div" >Правильный ответ: </div>
               <h1>Кто автор этой картины?</h1>
-              <div class = "image-container">
-                
-              <div class = "show-result">
-                  <div class = "show-result-picture"></div>
-                  <div class = "show-result-data">
-                    <p class = "show-result-author"></p>
-                    <p class = "show-result-name"></p>
-                    <p class = "show-result-year"></p>
-                  </div>
-                  <button type = "submit" class = "btn-next btn">Продолжить</button>
-                  </div>
-                  
-                  <div class = "finish-card">
-                  <div class = "finish-card-smile"></div>
-                  <div class = "finish-card-data">
-                    <p class = "finish-card-count"></p>
-                    <p class = "finish-card-status"></p>
-                  </div>
-                    <div class = "finish-card-buttons">
-                      <a class = "finish-card-btn btn start-again">Сыграть еще раз</a>
-                      <a class = "finish-card-btn btn"  href = "#/byauthor">К выбору раунда</a>
-                    </div>
-                  
-                </div>
+              <div class = "main-container">
+                <div class = "image-container">
 
-                <div class= "progressbar-container">
-                  <ul>
-                  ${chunkedQuestionsbyAuthor[request.id].map(
-                      (obj, index) =>
-                        `<li class = "progressbar-element progressbar-element-${index + 1}">
-                        </li>`
-                    )
-                    .join("\n ")}
-                  </ul>
+                  <div class = "show-result">
+                    <div class = "show-result-picture"></div>
+                    <div class = "show-result-data">
+                      <p class = "show-result-author"></p>
+                      <p class = "show-result-name"></p>
+                      <p class = "show-result-year"></p>
+                    </div>
+                    <button type = "submit" class = "btn-next btn click">Продолжить</button>
+                    </div>
+                    
+                    <div class = "finish-card">
+                    <div class = "finish-card-smile"></div>
+                    <div class = "finish-card-data">
+                      <p class = "finish-card-count"></p>
+                      <p class = "finish-card-status"></p>
+                    </div>
+                    <div class = "finish-card-buttons">
+                      <a class = "finish-card-btn btn start-again click">Сыграть еще раз</a>
+                      <a class = "finish-card-btn btn click"  href = "#/byauthor">К выбору раунда</a>
+                    </div>
+                  </div>
+
+                  <div class= "progressbar-container">
+                    <ul>
+                    ${chunkedQuestionsbyAuthor[request.id].map(
+                        (obj, index) =>
+                          `<li class = "progressbar-element progressbar-element-${index + 1}">
+                          </li>`
+                      )
+                      .join("\n ")}
+                    </ul>
+                  </div>
+
                 </div>
+                <div class = "timer-progressbar"></div>
               </div>
+
               
               <ul class = "answers-container" id = "answers-container">
               <div class = "shield hidden"></div>
@@ -54,6 +58,7 @@ let RoundByAuthor = {
         `
     }
     , after_render: async () => {
+      initializeVolume()
       let questionNumber = 0;
       let shuffledAuthorsArr = [];
       let answers = [];
@@ -65,6 +70,7 @@ let RoundByAuthor = {
       const answer2 = document.querySelector('.answer-2');
       const answer3 = document.querySelector('.answer-3');
       const answer4 = document.querySelector('.answer-4');
+      const answerBtns = document.querySelectorAll('.answer');
       const answersContainer = document.getElementById('answers-container');
       const showResult = document.querySelector('.show-result');
       const finishCard = document.querySelector('.finish-card');
@@ -73,39 +79,93 @@ let RoundByAuthor = {
       window.addEventListener("keydown", keyBind);
       startAgainBtn.addEventListener("click", startAgain);
       shield.addEventListener('click', shieldStopPropaganation);
-
-      function shieldStopPropaganation(e) {
-        e.stopPropagation()
-      }
-
-
-    
+      answersContainer.addEventListener('click', acceptAnswer);
       document.querySelector(`.progressbar-element-${questionNumber + 1}`).classList.add('current');
       updateContent();
+      
+      
+      //Timer starts
+      const timerProgressbar = document.querySelector('.timer-progressbar');
+      const timer = localStorage.getItem('quiz-timer');
+      timerProgressbar.style.width = `0%`;
+      let timerInterval = null;
+      let timeLeft = (timer - 1);
+      let width = 0;
+      startTimer();
 
-      answersContainer.addEventListener('click', acceptAnswer);
-
-
-      // Buttons clicks
-      // const buttons = document.querySelectorAll('.btn');
-      // buttons.forEach(element => {
-      // element.addEventListener('click', () => Utils.playAudio(sounds.click));    
-      // });
-  
-
-
-
-
-      function keyBind(event) {
-          if (event.keyCode === 13) {
-            event.preventDefault();            
-            if (showResult.classList.contains('show')) {
-              nextRound();
-            }
+      function startTimer() {
+        if (timer > 0 ) {
+          timeLeft = timer;
+          width = 100;
+          timerProgressbar.classList.remove('smooth');
+          timerProgressbar.style.width = `${width}%`;
+          timerProgressbar.style.backgroundColor = "lightgreen";
+          if (timerProgressbar.classList.contains('invisible')) {
+            timerProgressbar.classList.remove('invisible');
+          }
+          setTimeout(() => {timerProgressbar.classList.add('smooth')}, 10);
+          timerInterval = setInterval(countTimer, 1000);
         }
       }
 
+      function timerStop() {
+        clearTimeout(timerInterval);
+        if (!timerProgressbar.classList.contains('invisible')) {
+          timerProgressbar.classList.add('invisible');
+        }
+      }
+
+      function countTimer() {
+        if (timeLeft > 0) {
+            timeLeft --;
+            width -= (100 / timer);
+            colorizeTimerProgressbar() 
+            timerProgressbar.style.width = `${Math.floor(width)}%`;
+          } else {
+            timerStop();
+            onTimer();
+          }
+        }
+        
+        function onTimer() {
+          answers.push(false);
+          document.querySelector(`.progressbar-element-${questionNumber + 1}`).classList.add('wrong');
+          answerBtns.forEach(el => {
+            if (el.innerText === currentQuestionData.author) {
+              el.classList.add('correct');
+            } else {
+              el.classList.add('wrong');
+            }
+          });
+          showResultCard(false);
+          Utils.playAudio(Utils.audios.wrong);
+        }
+        
+        function colorizeTimerProgressbar() {
+          if (timeLeft <= (timer / 4)) {
+            timerProgressbar.style.backgroundColor = "red"
+          } else if (timeLeft <= (timer / 1.5)) {
+            timerProgressbar.style.backgroundColor = "orange"
+          } else {
+            timerProgressbar.style.backgroundColor = "lightgreen"
+          }
+        }
+
+        function shieldStopPropaganation(e) {
+        e.stopPropagation()
+      }
+      
+      function keyBind(event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();            
+          if (showResult.classList.contains('show')) {
+            nextRound();
+          }
+        }
+      }
+      
       function startAgain() {
+        startTimer();
         shield.classList.add('hidden');
         for (let i = 0; i < questionNumber + 1; i++) {
           document.querySelector(`.progressbar-element-${i + 1}`).classList.remove('wrong');
@@ -116,12 +176,12 @@ let RoundByAuthor = {
         shuffledAuthorsArr = [];
         answers = [];
         currentQuestionData = chunkedQuestionsbyAuthor[request.id][questionNumber];
-
+        
         finishCard.classList.remove('show');
         updateContent();
       }
-
-
+      
+      
       function showResultCard(state) {
         const showResultPicture = document.querySelector('.show-result-picture');
         const showResultAuthor = document.querySelector('.show-result-author');
@@ -140,36 +200,43 @@ let RoundByAuthor = {
         showResult.addEventListener('click', nextRound);
         showResult.classList.add('show');
       }
-
+      
       function acceptAnswer(e) {
         e.preventDefault();
+        timerStop();
         if (e.target.innerText === currentQuestionData.author) {
           correctAnswer(e) 
         } else {
           wrongAnswer(e);          
         }
-       }
-
-       function wrongAnswer(e) {
+      }
+      
+      function wrongAnswer(e) {
         answers.push(false);
         document.querySelector(`.progressbar-element-${questionNumber + 1}`).classList.add('wrong');
         e.target.classList.add('wrong');
+        answerBtns.forEach(el => {
+          if (el.innerText === currentQuestionData.author) {
+            el.classList.add('correct');
+          }
+        });
         showResultCard(false);
-        Utils.playAudio(Utils.sounds.wrong);
-       }
-
+        Utils.playAudio(Utils.audios.wrong);
+      }
+      
+      
        function correctAnswer(e) {
         answers.push(true);
         document.querySelector(`.progressbar-element-${questionNumber + 1}`).classList.add('correct');
         e.target.classList.add('correct');
         showResultCard(true);
-        Utils.playAudio(Utils.sounds.correct);
+        Utils.playAudio(Utils.audios.correct);
        }
 
        function nextRound() {
+        startTimer();
         shield.classList.add('hidden');
         showResult.classList.remove('show');
-         const answerBtns = document.querySelectorAll('.answer');
          answerBtns.forEach(element => {
            element.classList.remove('correct');
            element.classList.remove('wrong');
@@ -194,7 +261,15 @@ let RoundByAuthor = {
         document.querySelector(`.progressbar-element-${questionNumber + 1}`).classList.add('current');
       }   
 
+      function initializeVolume() {
+        const quizVolume = localStorage.getItem('quiz-volume');
+        for (let audio in Utils.audios) {
+          Utils.audios[audio].volume = quizVolume;
+        }
+      }
+
       function finishRound() {
+        timerStop();
         shield.classList.remove('hidden');
         showResult.classList.remove('show');
         const finishCardCount = document.querySelector('.finish-card-count');
@@ -273,11 +348,19 @@ let RoundByAuthor = {
         
         finishCard.style.backgroundColor = background;
         finishCardSmile.style.backgroundPosition = position;
-        finishCardCount.innerText = `${rightAnswersNumber} из ${(chunkedQuestionsbyAuthor[request.id].length - 1)}`
+        finishCardCount.innerText = `${rightAnswersNumber} из ${(chunkedQuestionsbyAuthor[request.id].length)}`
         finishCardStatus.innerText = status;
         finishCard.classList.add('show');
-        Utils.playAudio(Utils.sounds.finishRound);
+        Utils.playAudio(Utils.audios.finishRound);
       }
+
+
+      // Buttons clicks
+      // const buttons = document.querySelectorAll('.click');
+      // buttons.forEach(element => {
+      // element.addEventListener('click', () => Utils.playAudio(Utils.audios.click));    
+      // });
+
 
     }
 }

@@ -78,11 +78,14 @@ for (let i = 0; i < chunkedQuestionsbyAuthor.length; i++) {
 }
 
 if (!localStorage.getItem("quizAnswersByAuthor")) {
-  localStorage.setItem(
-    "quizAnswersByAuthor",
-    JSON.stringify(initialQuizAnswersByAuthor)
-  );
+  localStorage.setItem("quizAnswersByAuthor", JSON.stringify(initialQuizAnswersByAuthor));
 }
+if (!localStorage.getItem("quiz-volume") || !localStorage.getItem("quiz-timer")) {
+  localStorage.setItem("quiz-volume", 0.5);
+  localStorage.setItem("quiz-timer", 30);
+}
+
+
 
 //console.log(chunkedQuestionsbyAuthor[0][0].author);
 
@@ -120,3 +123,5 @@ window.addEventListener("hashchange", router);
 
 // Listen on page load:
 window.addEventListener("load", router);
+
+

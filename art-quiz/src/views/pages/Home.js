@@ -6,9 +6,9 @@ let Home = {
         <main>
             <nav>
             <ul class = "main-btn-container">
-              <li class = "main-btn btn"><a class = "btn-icon btn-byartist" href = "#/byauthor">Викторина по художникам</a></li>
-              <li class = "main-btn btn"><a class = "btn-icon btn-bypicture" href = "#/bypictures">Викторина по картинам</a></li>
-              <li class = "main-btn btn"><a class = "btn-icon btn-settings" href = "#/settings">Настройки</a></li>
+              <li class = "main-btn btn click"><a class = "btn-icon btn-byartist" href = "#/byauthor">Викторина по художникам</a></li>
+              <li class = "main-btn btn click"><a class = "btn-icon btn-bypicture" href = "#/bypictures">Викторина по картинам</a></li>
+              <li class = "main-btn btn click"><a class = "btn-icon btn-settings" href = "#/settings">Настройки</a></li>
             </ul>
               </nav>    
             </main>
