@@ -143,7 +143,7 @@ let RoundByPicture = {
           answers.push(false);
           document.querySelector(`.progressbar-element-${questionNumber + 1}`).classList.add('wrong');
           answerBtns.forEach(el => {
-            if (el.innerText === currentQuestionData.author) {
+            if (el.style.backgroundImage === `url("./data/${currentQuestionData.imageNum}.webp")`) {
               el.classList.add('correct');
             } else {
               el.classList.add('wrong');
