@@ -677,5 +677,10 @@ input {
 }
 
 .smooth {
-  transition: 1s width linear;
+  transition: 1s width linear, 2s background-color linear;
+}
+
+.hint {
+  font-size: 1em;
+  font-style: italic;
 }

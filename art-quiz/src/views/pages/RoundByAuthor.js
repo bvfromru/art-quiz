@@ -76,12 +76,20 @@ let RoundByAuthor = {
       const finishCard = document.querySelector('.finish-card');
       const startAgainBtn = document.querySelector('.start-again');
       const shield = document.querySelector('.shield');
+      const headerBtns = document.querySelectorAll('.navbar-item');
       window.addEventListener("keydown", keyBind);
       startAgainBtn.addEventListener("click", startAgain);
       shield.addEventListener('click', shieldStopPropaganation);
       answersContainer.addEventListener('click', acceptAnswer);
       document.querySelector(`.progressbar-element-${questionNumber + 1}`).classList.add('current');
       updateContent();
+      answerBtns.forEach(el => {
+        el.addEventListener('keypress', acceptAnswer);
+      });
+      headerBtns.forEach(el => {
+        el.addEventListener('click', timerStop);
+      });
+
       
       
       //Timer starts
@@ -160,6 +168,28 @@ let RoundByAuthor = {
           event.preventDefault();            
           if (showResult.classList.contains('show')) {
             nextRound();
+          }
+        }
+        if ((49 <= event.keyCode && event.keyCode <= 52) || (97 <= event.keyCode && event.keyCode <= 100)) {
+          event.preventDefault();            
+          if (shield.classList.contains('hidden')) {
+            let eventVirtual = new Event('keypress');
+            switch (event.keyCode) {
+              case 50:
+              case 98:
+                answer2.dispatchEvent(eventVirtual);
+                break;
+              case 51:
+              case 99:
+                answer3.dispatchEvent(eventVirtual);
+                break;
+              case 52:
+              case 100:
+                answer4.dispatchEvent(eventVirtual);
+                break;
+              default:
+                answer1.dispatchEvent(eventVirtual);
+            }
           }
         }
       }

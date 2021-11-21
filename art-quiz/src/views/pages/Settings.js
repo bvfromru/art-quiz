@@ -26,6 +26,7 @@ let Settings = {
               <input class = "btn settings-btn settings-submit" type="submit" value="Сохранить">
             </div>
           </div>
+          <p class = "hint">Управление викториной с клавиатуры:<br>клавиши с 1 по 4 и Enter</p>
         </fieldset>
       </form>
 

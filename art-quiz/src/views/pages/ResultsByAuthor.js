@@ -39,7 +39,7 @@ let ResultsByAuthor = {
     resultsContainer.addEventListener('click', toggleFlip);
     paintCards();
 
-    console.log(answersArr);
+    
 
     function toggleFlip(e) {
       let target = e.target;

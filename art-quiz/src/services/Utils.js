@@ -38,7 +38,7 @@ const Utils = {
       const databaseNumber = images.length;
       while (arr.length < 4) {
         let randomInt = getRandomInt(databaseNumber);
-        if (!arr.includes(images[randomInt].author) && arr.includes(images[randomInt].author) !== str) {
+        if (!arr.includes(images[randomInt].author) && (arr.includes(images[randomInt].author) !== str)) {
           arr.push(images[randomInt].author)
         }
       }

@@ -41,7 +41,6 @@ let CategoriesByAuthor = {
     getResults();
 
     function getResults() {
-      console.log(quizAnswersByAuthor);
       chunkedQuestionsbyAuthor.map((obj, index) => {
         let numberSolved = Utils.calculateAnswers(quizAnswersByAuthor[index]);
         let numberCommon = chunkedQuestionsbyAuthor[0].length;
