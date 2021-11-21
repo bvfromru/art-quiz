@@ -46,6 +46,20 @@ const Utils = {
       return arr;
     },
 
+    getRandomPictures: (str) => {
+      let arr = [];
+      arr.push(str);
+      const databaseNumber = images.length;
+      while (arr.length < 4) {
+        let randomInt = getRandomInt(databaseNumber);
+        if (!arr.includes(images[randomInt].imageNum) && (arr.includes(images[randomInt].imageNum) !== str)) {
+          arr.push(images[randomInt].imageNum)
+        }
+      }
+      arr = shuffle(arr);
+      return arr;
+    },
+
     calculateAnswers(arr) {
       return arr.filter((value) => {return value}).length;
      },

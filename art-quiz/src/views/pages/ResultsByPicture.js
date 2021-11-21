@@ -1,7 +1,7 @@
 import Utils        from './../../services/Utils.js'
-import { chunkedQuestionsbyAuthor } from '../../index.js'
+import { chunkedQuestionsbyPicture } from '../../index.js'
 
-let ResultsByAuthor = {
+let ResultsByPicture = {
   render : async () => {
     let request = Utils.parseRequestURL();
     let roundNumber = +request.id.replace(/^0+/, '') + 1
@@ -9,18 +9,18 @@ let ResultsByAuthor = {
           <section class="section">
             <h1>Результаты ${roundNumber} раунда игры по художникам</h1>
             <ul class = "results-container">
-            ${ chunkedQuestionsbyAuthor[request.id].map((obj, index) => 
+            ${ chunkedQuestionsbyPicture[request.id].map((obj, index) => 
               `<li class = "results">
                 <div class = "flip-container">
                   <div class = "flipper">
                     <div class = "front">
-                      <img src = ./data/${chunkedQuestionsbyAuthor[request.id][index].imageNum}.webp>
+                      <img src = ./data/${chunkedQuestionsbyPicture[request.id][index].imageNum}.webp>
                       <div class = "score"></div>
                     </div>
                     <div class = "back">
-                      <div class = "author">${chunkedQuestionsbyAuthor[request.id][index].author}</div>
-                      <div class = "name">"${chunkedQuestionsbyAuthor[request.id][index].name}"</div>
-                      <div class = "year">(${chunkedQuestionsbyAuthor[request.id][index].year})</div>
+                      <div class = "author">${chunkedQuestionsbyPicture[request.id][index].author}</div>
+                      <div class = "name">"${chunkedQuestionsbyPicture[request.id][index].name}"</div>
+                      <div class = "year">(${chunkedQuestionsbyPicture[request.id][index].year})</div>
                     </div>
                   </div>
                 </div>
@@ -33,6 +33,10 @@ let ResultsByAuthor = {
       `
   }
   , after_render: async () => {
+    const navbarBtn = document.querySelector('.navbar-item-return');
+    navbarBtn.setAttribute("href", "#/bypicture")
+
+
     let request = Utils.parseRequestURL();
     const resultsContainer = document.querySelector('.results-container');
     resultsContainer.addEventListener('click', toggleFlip);
@@ -55,10 +59,10 @@ let ResultsByAuthor = {
     }
 
     function paintCards() {
-      let quizAnswersByAuthor = JSON.parse(localStorage.getItem('quizAnswersByAuthor'));
+      let quizAnswersByPicture = JSON.parse(localStorage.getItem('quizAnswersByPicture'));
       const allCards = document.querySelectorAll('.results');
       allCards.forEach((element, id) => {
-        if (!quizAnswersByAuthor[request.id][id]) {
+        if (!quizAnswersByPicture[request.id][id]) {
           element.classList.add('grayscale');
         }
       });
@@ -69,4 +73,4 @@ let ResultsByAuthor = {
 }
 
 
-export default ResultsByAuthor;
+export default ResultsByPicture;

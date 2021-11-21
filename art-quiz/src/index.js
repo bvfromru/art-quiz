@@ -1,6 +1,6 @@
 // ***
-// Dear mentor, if you read this, please forgive me for all the crutches that I used here, 
-// my knowledge is still not enough to write good code.
+// Dear mentor, if you read this please forgive me for all the crutches that I used here, 
+// my JS knowledge is still not enough to write good code. ;p
 // ***
 
 "use strict";
@@ -9,12 +9,15 @@
 import Home from "./views/pages/Home.js";
 import Error404 from "./views/pages/Error404.js";
 import RoundByAuthor from "./views/pages/RoundByAuthor.js";
+import RoundByPicture from "./views/pages/RoundByPicture.js";
 import ResultsByAuthor from "./views/pages/ResultsByAuthor.js";
+import ResultsByPicture from "./views/pages/ResultsByPicture.js";
 import Settings from "./views/pages/Settings.js";
 import Navbar from "./views/components/Navbar.js";
 import Bottombar from "./views/components/Bottombar.js";
 import Utils from "./services/Utils.js";
 import CategoriesByAuthor from "./views/pages/CategoriesByAuthor.js";
+import CategoriesByPicture from "./views/pages/CategoriesByPicture.js";
 
 // List of supported routes. Any url other than these routes will throw a 404 error
 const routes = {
@@ -22,16 +25,21 @@ const routes = {
   "/home": Home,
   "/settings": Settings,
   "/byauthor/:id": RoundByAuthor,
+  "/bypicture/:id": RoundByPicture,
   "/resultsbyauthor/:id": ResultsByAuthor,
+  "/resultsbypicture/:id": ResultsByPicture,
   "/byauthor": CategoriesByAuthor,
+  "/bypicture": CategoriesByPicture,
 };
 
 
 let questionsByAuthor = [];
 let questionsByPicture = [];
 let initialQuizAnswersByAuthor = [];
+let initialQuizAnswersByPicture = [];
 const chunkSize = 10;
 export let chunkedQuestionsbyAuthor = [];
+export let chunkedQuestionsbyPicture = [];
 export let images = null;
 
 
@@ -58,9 +66,15 @@ let calculateArrays = async () => {
       questionsByAuthor.push({
         ...item,
       });
+    } else {
+      questionsByPicture.push({
+        ...item,
+      });
     }
   });
+
   chunkedQuestionsbyAuthor = chunkArray(questionsByAuthor, chunkSize);
+  chunkedQuestionsbyPicture = chunkArray(questionsByPicture, chunkSize);
   
   // Initialize localstorage answers by author
   for (let i = 0; i < chunkedQuestionsbyAuthor.length; i++) {
@@ -70,9 +84,20 @@ let calculateArrays = async () => {
     }
     initialQuizAnswersByAuthor.push(tempArray);
   }
+  // Initialize localstorage answers by picture
+  for (let i = 0; i < chunkedQuestionsbyPicture.length; i++) {
+    let tempArray = [];
+    for (let j = 0; j < chunkedQuestionsbyPicture[0].length; j++) {
+      tempArray.push(0);
+    }
+    initialQuizAnswersByPicture.push(tempArray);
+  }
   
   if (!localStorage.getItem("quizAnswersByAuthor")) {
     localStorage.setItem("quizAnswersByAuthor", JSON.stringify(initialQuizAnswersByAuthor));
+  }
+  if (!localStorage.getItem("quizAnswersByPicture")) {
+    localStorage.setItem("quizAnswersByPicture", JSON.stringify(initialQuizAnswersByAuthor));
   }
   if (!localStorage.getItem("quiz-volume") || !localStorage.getItem("quiz-timer")) {
     localStorage.setItem("quiz-volume", 0.5);
