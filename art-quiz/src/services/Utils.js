@@ -1,4 +1,4 @@
-import images from '../images.js'
+import { images } from '../index.js'
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -64,7 +64,6 @@ const Utils = {
 
 // Initialize Audio
   audios: {
-    click: new Audio('./assets/sounds/click.mp3'),
     wrong: new Audio('./assets/sounds/wrong.mp3'),
     correct: new Audio('./assets/sounds/correct.mp3'),
     finishRound: new Audio('./assets/sounds/finishround.mp3'),

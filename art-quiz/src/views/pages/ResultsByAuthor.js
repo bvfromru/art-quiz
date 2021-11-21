@@ -1,5 +1,5 @@
 import Utils        from './../../services/Utils.js'
-import { chunkedQuestionsbyAuthor } from '../../app.js'
+import { chunkedQuestionsbyAuthor } from '../../index.js'
 
 let ResultsByAuthor = {
   render : async () => {
@@ -14,7 +14,7 @@ let ResultsByAuthor = {
                 <div class = "flip-container">
                   <div class = "flipper">
                     <div class = "front">
-                      <img src = ../../data/${chunkedQuestionsbyAuthor[request.id][index].imageNum}.webp>
+                      <img src = ./data/${chunkedQuestionsbyAuthor[request.id][index].imageNum}.webp>
                       <div class = "score"></div>
                     </div>
                     <div class = "back">

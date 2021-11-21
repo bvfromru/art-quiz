@@ -1,5 +1,5 @@
 import Utils        from './../../services/Utils.js'
-import { chunkedQuestionsbyAuthor } from '../../app.js'
+import { chunkedQuestionsbyAuthor } from '../../index.js'
 
 let RoundByAuthor = {
     render : async () => {
@@ -282,7 +282,7 @@ let RoundByAuthor = {
        function updateContent() {
         currentQuestionData = chunkedQuestionsbyAuthor[request.id][questionNumber];
         shuffledAuthorsArr = Utils.getRandomAuthors(currentQuestionData.author);
-        imageContainer.style.backgroundImage  = `url("../../data/${currentQuestionData.imageNum}.webp")`;
+        imageContainer.style.backgroundImage  = `url("./data/${currentQuestionData.imageNum}.webp")`;
         div.innerText = `Правильный ответ: ${currentQuestionData.author}`;
         answer1.innerText = shuffledAuthorsArr[0];
         answer2.innerText = shuffledAuthorsArr[1];
@@ -306,11 +306,7 @@ let RoundByAuthor = {
         const finishCardStatus = document.querySelector('.finish-card-status');
         const finishCardSmile = document.querySelector('.finish-card-smile');
         
-        //alert('Конец раунда!');
-        //console.log(answers);
         let quizAnswersByAuthor = JSON.parse(localStorage.getItem('quizAnswersByAuthor'));
-        //console.log(quizAnswersByAuthor);
-        //console.log(quizAnswersByAuthor[request.id]);
         quizAnswersByAuthor[request.id] = answers;
         localStorage.setItem('quizAnswersByAuthor', JSON.stringify(quizAnswersByAuthor));
         let rightAnswersNumber = Utils.calculateAnswers(answers);

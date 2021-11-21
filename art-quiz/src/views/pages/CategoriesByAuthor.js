@@ -1,5 +1,4 @@
-//import Utils        from './../../services/Utils.js'
-import { chunkedQuestionsbyAuthor } from "../../app.js";
+import { chunkedQuestionsbyAuthor } from "../../index.js";
 import Utils from "../../services/Utils.js";
 
 let CategoriesByAuthor = {
@@ -44,7 +43,7 @@ let CategoriesByAuthor = {
       chunkedQuestionsbyAuthor.map((obj, index) => {
         let numberSolved = Utils.calculateAnswers(quizAnswersByAuthor[index]);
         let numberCommon = chunkedQuestionsbyAuthor[0].length;
-        document.querySelector(`.categories-${index + 1}`).style.backgroundImage  = `url("../../data/${chunkedQuestionsbyAuthor[index][0].imageNum}.webp")`;
+        document.querySelector(`.categories-${index + 1}`).style.backgroundImage  = `url("./data/${chunkedQuestionsbyAuthor[index][0].imageNum}.webp")`;
         if (!numberSolved) {
           document.querySelector(`.categories-${index + 1}`).classList.add("half-grayscale");
           document.querySelector(`.results-${index + 1}`).classList.add("hidden");

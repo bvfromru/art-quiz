@@ -1,48 +1,84 @@
+// ***
+// Dear mentor, if you read this, please forgive me for all the crutches that I used here, 
+// my knowledge is still not enough to write good code.
+// ***
+
 "use strict";
 
 //import images from './images.js'
 import Home from "./views/pages/Home.js";
 import Error404 from "./views/pages/Error404.js";
-import PostShow from "./views/pages/Settings.js";
 import RoundByAuthor from "./views/pages/RoundByAuthor.js";
 import ResultsByAuthor from "./views/pages/ResultsByAuthor.js";
-import Register from "./views/pages/Register.js";
 import Settings from "./views/pages/Settings.js";
 import Navbar from "./views/components/Navbar.js";
 import Bottombar from "./views/components/Bottombar.js";
-
 import Utils from "./services/Utils.js";
 import CategoriesByAuthor from "./views/pages/CategoriesByAuthor.js";
 
 // List of supported routes. Any url other than these routes will throw a 404 error
 const routes = {
   "/": Home,
+  "/home": Home,
   "/settings": Settings,
   "/byauthor/:id": RoundByAuthor,
   "/resultsbyauthor/:id": ResultsByAuthor,
-  "/register": Register,
   "/byauthor": CategoriesByAuthor,
 };
 
 
+let questionsByAuthor = [];
+let questionsByPicture = [];
+let initialQuizAnswersByAuthor = [];
+const chunkSize = 10;
+export let chunkedQuestionsbyAuthor = [];
+export let images = null;
 
+
+let initialize = async () => {
+  images = await getPicturesData();
+  calculateArrays();
+}
 
 
 // Initialize pictures data
 let getPicturesData = async () => {
   try {
-    const response = await fetch("../../data/data.json");
+    const response = await fetch("./data.json");
     const json = await response.json();
-    // console.log(json)
     return json;
   } catch (err) {
     console.log("Error getting json data", err);
   }
 };
 
-const images = await getPicturesData();
-
-// BV images initialization
+let calculateArrays = async () => {
+  images.forEach((item, index) => {
+    if (index % 2 === 0) {
+      questionsByAuthor.push({
+        ...item,
+      });
+    }
+  });
+  chunkedQuestionsbyAuthor = chunkArray(questionsByAuthor, chunkSize);
+  
+  // Initialize localstorage answers by author
+  for (let i = 0; i < chunkedQuestionsbyAuthor.length; i++) {
+    let tempArray = [];
+    for (let j = 0; j < chunkedQuestionsbyAuthor[0].length; j++) {
+      tempArray.push(0);
+    }
+    initialQuizAnswersByAuthor.push(tempArray);
+  }
+  
+  if (!localStorage.getItem("quizAnswersByAuthor")) {
+    localStorage.setItem("quizAnswersByAuthor", JSON.stringify(initialQuizAnswersByAuthor));
+  }
+  if (!localStorage.getItem("quiz-volume") || !localStorage.getItem("quiz-timer")) {
+    localStorage.setItem("quiz-volume", 0.5);
+    localStorage.setItem("quiz-timer", 30);
+  }
+}
 
 function chunkArray(myArray, chunk_size) {
   let tempArray = [];
@@ -53,41 +89,13 @@ function chunkArray(myArray, chunk_size) {
   return tempArray;
 }
 
-const questionsByAuthor = [];
-const questionsByPicture = [];
-const initialQuizAnswersByAuthor = [];
-const chunkSize = 10;
-
-images.forEach((item, index) => {
-  if (index % 2 === 0) {
-    questionsByAuthor.push({
-      ...item,
-    });
-  }
-});
-
-export const chunkedQuestionsbyAuthor = chunkArray(questionsByAuthor, chunkSize);
-
-// Initialize localstorage answers by author
-for (let i = 0; i < chunkedQuestionsbyAuthor.length; i++) {
-  let tempArray = [];
-  for (let j = 0; j < chunkedQuestionsbyAuthor[0].length; j++) {
-    tempArray.push(0);
-  }
-  initialQuizAnswersByAuthor.push(tempArray);
-}
-
-if (!localStorage.getItem("quizAnswersByAuthor")) {
-  localStorage.setItem("quizAnswersByAuthor", JSON.stringify(initialQuizAnswersByAuthor));
-}
-if (!localStorage.getItem("quiz-volume") || !localStorage.getItem("quiz-timer")) {
-  localStorage.setItem("quiz-volume", 0.5);
-  localStorage.setItem("quiz-timer", 30);
-}
 
 
 
-//console.log(chunkedQuestionsbyAuthor[0][0].author);
+
+
+initialize();
+
 
 // The router code. Takes a URL, checks against the list of supported routes and then renders the corresponding content page.
 const router = async () => {
