@@ -5,8 +5,7 @@ let RoundByAuthor = {
     render : async () => {
       let request = Utils.parseRequestURL();
         return /*html*/`
-            <div class = "spoiler" id ="div" >Правильный ответ: </div>
-              <h1>Кто автор этой картины?</h1>
+             <h1>Кто автор этой картины?</h1>
               <div class = "main-container">
                 <div class = "image-container">
 
@@ -65,7 +64,6 @@ let RoundByAuthor = {
       let request = Utils.parseRequestURL()
       let currentQuestionData = chunkedQuestionsbyAuthor[request.id][questionNumber];
       const imageContainer = document.querySelector('.image-container');
-      const div = document.getElementById('div');
       const answer1 = document.querySelector('.answer-1');
       const answer2 = document.querySelector('.answer-2');
       const answer3 = document.querySelector('.answer-3');
@@ -283,7 +281,6 @@ let RoundByAuthor = {
         currentQuestionData = chunkedQuestionsbyAuthor[request.id][questionNumber];
         shuffledAuthorsArr = Utils.getRandomAuthors(currentQuestionData.author);
         imageContainer.style.backgroundImage  = `url("./data/${currentQuestionData.imageNum}.webp")`;
-        div.innerText = `Правильный ответ: ${currentQuestionData.author}`;
         answer1.innerText = shuffledAuthorsArr[0];
         answer2.innerText = shuffledAuthorsArr[1];
         answer3.innerText = shuffledAuthorsArr[2];

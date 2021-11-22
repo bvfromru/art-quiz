@@ -5,7 +5,6 @@ let RoundByPicture = {
     render : async () => {
       let request = Utils.parseRequestURL();
         return /*html*/`
-            <div class = "spoiler" id ="div" >Правильный ответ: </div>
               <h1 class = "bypicture-question">Какую из этих картин написал ?</h1>
               <div class = "main-container bypicture-container">
                 <div class = "image-container">
@@ -65,8 +64,6 @@ let RoundByPicture = {
       let request = Utils.parseRequestURL()
       let currentQuestionData = chunkedQuestionsbyPicture[request.id][questionNumber];
       const question = document.querySelector('.bypicture-question');
-      const imageContainer = document.querySelector('.image-container');
-      const div = document.getElementById('div');
       const answer1 = document.querySelector('.answer-1');
       const answer2 = document.querySelector('.answer-2');
       const answer3 = document.querySelector('.answer-3');
@@ -289,7 +286,6 @@ let RoundByPicture = {
          currentQuestionData = chunkedQuestionsbyPicture[request.id][questionNumber];
          shuffledPicturesArr = Utils.getRandomPictures(currentQuestionData.imageNum);
          //imageContainer.style.backgroundImage  = `none`;
-         div.innerText = `Правильный ответ: ${currentQuestionData.author}`;
          answer1.style.backgroundImage = `url("./data/${shuffledPicturesArr[0]}.webp")`;
          answer2.style.backgroundImage = `url("./data/${shuffledPicturesArr[1]}.webp")`;
          answer3.style.backgroundImage = `url("./data/${shuffledPicturesArr[2]}.webp")`;

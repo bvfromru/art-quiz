@@ -36,6 +36,7 @@ h1 {
   justify-content: space-between;
 
   min-height: 97vh;
+  min-height: calc(var(--vh, 1vh) * 97);
   //background-color: rgba(0, 0, 0, 0.5);
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
@@ -139,7 +140,6 @@ footer {
   cursor: pointer;
   border: 1px solid #c8c8c8;
   transition: border 0.5s, background-color 0.1s;
-  
 
   &:hover {
     border-color: #777;
@@ -209,7 +209,7 @@ footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10px;
+    padding: 0px;
     color: black;
     background-size: cover;
     position: relative;
@@ -253,8 +253,8 @@ footer {
 
   a {
     color: black;
-    width: 210px;
-    height: 210px;
+    width: 230px;
+    height: 230px;
   }
 }
 
@@ -273,16 +273,15 @@ footer {
   // justify-content: space-around;
   // gap: 20px 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 210px);
+  grid-template-columns: repeat(auto-fill, 230px);
   grid-gap: 20px 0;
   justify-content: space-between;
-
-  
-
- 
+  margin-right: 10px;
+  margin-left: 10px;
 
   .front {
     position: relative;
+    height: 230px;
 
     .score {
       position: absolute;
@@ -299,6 +298,8 @@ footer {
   align-items: center;
   font-size: 26px;
   border-radius: 10px;
+  width: 230px;
+  height: 230px;
 
   div {
     margin-left: 10px;
@@ -324,7 +325,7 @@ footer {
 }
 
 .results img {
-  width: 210px;
+  width: 230px;
   border-radius: 10px;
   cursor: pointer;
 }
@@ -497,6 +498,7 @@ button {
     margin-right: auto;
     background-image: url("./assets/img/answers.png");
     margin-top: 10px;
+    flex-shrink: 0;
   }
 
   .show-result-author {
@@ -597,7 +599,6 @@ fieldset {
 
 .settings-btn {
   padding: 10px 20px;
-  width: 190px;
 }
 
 .settings-on-off-btn {
@@ -648,7 +649,6 @@ input {
 .amount-section {
   display: flex;
   flex-direction: row;
-  
 }
 
 .change-timer-btn {
@@ -705,7 +705,6 @@ input {
     height: 268px;
     background-size: cover;
     transition: filter 0.5s;
-    
 
     &:hover {
       filter: brightness(1.1);
@@ -719,8 +718,6 @@ input {
     top: 0;
     right: 0;
   }
-
-  
 
   .progressbar-container {
     position: initial;
@@ -736,9 +733,119 @@ input {
     }
   }
 
-.show-result-data {
-  margin: 15px 0;
+  .show-result-data {
+    margin: 15px 0;
+  }
 }
 
-}
+@media screen and (max-width: 800px) {
 
+  body {
+    font-size: 12px;
+  }
+
+  .overlay {
+    padding: 0;
+  }
+
+  .wrapper {
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+    border-radius: 0;
+    width: 590px;
+    min-width: initial;
+    max-width: initial;
+    padding: 5px;
+  }
+
+  fieldset {
+    max-width: 560px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .main-nav {
+    padding: 5px 5px 0 5px;
+
+    .navbar-item {
+      font-size: 0;
+
+      &:before {
+        margin: 0;
+      }
+    }
+  }
+
+  .main-btn-container {
+    max-width: 500px;
+    a {
+      min-height: 106px;
+    }
+  }
+
+  .answers-container {
+    li {
+      a {
+        min-height: 76px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  .image-container {
+    .btn-next {
+      margin-left: 20px;
+      margin-right: 20px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      margin-bottom: 40px;
+    }
+  }
+
+  .categories-container {
+    gap: 0;
+    li {
+      margin: 3px;
+    }
+    a {
+      width: 190px;
+      height: 190px;
+    }
+  }
+
+  .bypicture-container {
+    .answers-container {
+      width: 100%;
+
+      li {
+        margin: 3px;
+
+        a {
+          height: 272px;
+        }
+      }
+    }
+  }
+
+  .results-container {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    margin: 0;
+    grid-template-columns: repeat(auto-fill, 190px);
+    grid-gap: 10px 0;
+    
+    .front {
+      height: 190px;
+    }
+
+    .back {
+      width: 190px;
+      height: 190px;
+    }
+
+    img {
+      width: 190px;
+    }
+  }
+}

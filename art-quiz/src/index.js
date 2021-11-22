@@ -157,4 +157,11 @@ window.addEventListener("hashchange", router);
 // Listen on page load:
 window.addEventListener("load", router);
 
+// Trick to viewport units on mobile
+window.addEventListener('resize', () => {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
 
+
+console.log("***\n\nПриветствую проверяющего!\n\nИспользованные анимации:\nИндикатор загрузки при первоначальной загрузке страницы (вращающиеся круги);\nРадиальная закраска кнопок ответа при ответе;\nВыезжающая панель с правильным ответом, а также панель окончания раунда;\nВращающиеся карточки на странице результатов раунда;\n\nДополнительный функционал:\nУправление викториной с клавиатуры;\nРазные уведомления по окончанию раунда в зависимости от результата;\n\nСпасибо за проверку!\n\n***");
