@@ -740,6 +740,8 @@ input {
 
 @media screen and (max-width: 800px) {
 
+
+
   body {
     font-size: 12px;
   }
@@ -756,6 +758,10 @@ input {
     min-width: initial;
     max-width: initial;
     padding: 5px;
+  }
+
+  footer {
+    margin-bottom: 10px;
   }
 
   fieldset {
