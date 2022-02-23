@@ -1,6 +1,6 @@
 RS School JavaScript/Front-end 2021Q3 study project. A Single Page Application game quiz. 
 
-Task: https://github.com/rolling-scopes-school/tasks/blob/master/tasks/art-quiz/art-quiz
+Task: https://github.com/rolling-scopes-school/tasks/blob/master/tasks/art-quiz/art-quiz.md
 
 Deploy: https://bvfromru.github.io/art-quiz/
 
